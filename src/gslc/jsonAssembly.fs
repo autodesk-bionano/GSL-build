@@ -50,7 +50,7 @@ let dumpJsonAssemblies (prefix:string) (assemblies : AssemblyOut list) =
             |> List.map(fun a ->
             { id = a.id.Value.ToString(); name = a.name.ToString();
             dnaSlices = (a.dnaParts |> List.map(fun d ->
-            { id = (match d.id with | None -> "0" | Some v -> d.id.Value.ToString());
+            { id = (match d.id with | None -> "0" | _ -> d.id.Value.ToString());
             extId = "";
             dna = String.Join("", d.dna);
             sourceChr = d.sourceChr;
@@ -62,8 +62,29 @@ let dumpJsonAssemblies (prefix:string) (assemblies : AssemblyOut list) =
             destFwd = d.destFwd;
             amplified = d.amplified;
             sliceName = d.sliceName.ToString();
-            sliceType = d.sliceType.ToString();
-            breed = d.breed.ToString();
+            sliceType = 
+                (match d.sliceType with
+                    | REGULAR -> "REGULAR"
+                    | MARKER -> "MARKER"
+                    | LINKER -> "LINKER"
+                    | INLINEST -> "INLINE"
+                    | FUSIONST ->"FUSION");
+            breed = 
+                (match d.breed with 
+                    | B_PROMOTER -> "B_PROMOTER"
+                    | B_TERMINATOR -> "B_TERMINATOR"
+                    | B_MARKER -> "B_MARKER"
+                    | B_FUSABLEORF -> "B_FUSABLEORF"
+                    | B_UPSTREAM -> "B_UPSTREAM"
+                    | B_DOWNSTREAM -> "B_DOWNSTREAM"
+                    | B_GST -> "B_GST"
+                    | G_M -> "G_M"
+                    | G_STOP -> "G_STOP"
+                    | B_GS -> "B_GS"
+                    | B_INLINE -> "B_INLINE"
+                    | B_X -> "B_X"
+                    | B_VIRTUAL -> "B_VIRTUAL"
+                    | B_LINKER -> "B_LINKER" );
             description = d.description.ToString()}));
             })
     
