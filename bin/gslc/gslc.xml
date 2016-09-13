@@ -1,0 +1,1186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>gslc</name></assembly>
+<members>
+<member name="M:DnaCreation.expandAssembly(System.Boolean,Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},Microsoft.FSharp.Collections.FSharpMap{System.String,System.Char[]},parseTypes.Assembly,Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Take a parsed assembly definition and translate it
+ to underlying DNA pieces, checking the structure in the process.
+ Raises an exception on error.
+</summary>
+</member>
+<member name="M:DnaCreation.prepPPPMultiPart``2(``0,``1,Microsoft.FSharp.Collections.FSharpList{parseTypes.PPP})">
+<summary>
+ Take a PPP that is of type multipart and turn it into a simple
+ list of underlying PPPs, applying any reverse operator and
+ disributing high level pragmas over underlying PPPs
+</summary>
+</member>
+<member name="M:DnaCreation.expandMarkerPart(Microsoft.FSharp.Collections.FSharpMap{System.String,System.Char[]},System.String,parseTypes.PPP)">
+<summary>
+ Expand a marker part into DNA pieces.
+ Exception on failure.
+</summary>
+</member>
+<member name="M:DnaCreation.getUri(parseTypes.PPP)">
+<summary>
+ Extract URI from a PPP, if it has one.
+</summary>
+</member>
+<member name="M:DnaCreation.getSliceName(parseTypes.PPP)">
+<summary>
+ Extract slice name from a PPP, if it has one.
+</summary>
+</member>
+<member name="M:DnaCreation.realizeSequence(System.Boolean,System.Boolean,sgdrefformat.GenomeDef,parseTypes.GenePartWithLinker)">
+<summary>
+ Take a genepart and slices and get the actual DNA sequence.
+</summary>
+</member>
+<member name="M:DnaCreation.getRG(parseTypes.Assembly,Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},pragmaTypes.PragmaCollection)">
+<summary>
+ Get the reference genome for a given assembly and set of pragmas.
+ Exception on error.
+</summary>
+</member>
+<member name="M:DnaCreation.lookupGenePart(System.String,System.Char,Microsoft.FSharp.Collections.FSharpList{parseTypes.Mod})">
+<summary>
+ Translate gene part label.  Raises an exception for errors.
+</summary>
+</member>
+<member name="M:DnaCreation.translateGenePrefix(sgdrefformat.GenomeDef,commonTypes.StandardSlice)">
+<summary>
+ Generate logical coordinates for the start and end of the gene part
+ these are relative to the gene, not the genome for now.  We transform
+ to genomic coordinates below.
+ Transform all non gXXX forms of gene into gXX forms.
+</summary>
+</member>
+<member name="M:DnaCreation.adjustToPhysical(Amyris.Bio.sgd.Feature,constants.RelPos)">
+<summary>
+ Given a feature and a relative position, find the zero based physical
+ coordinate for the position.
+ Determine range of DNA needed, translating into physical coordinates
+ Final start of the piece.  Determine which end we are working relative to
+</summary>
+</member>
+<member name="T:Expansion.ExpansionLevel">
+<summary>
+ Rewriting rules for serially expanding GSL input
+ What type of GSL expansion do we need to perform
+</summary>
+</member>
+<member name="M:Expansion.gslExpansion(System.Boolean,System.Boolean,Expansion.ExpansionLevel,Microsoft.FSharp.Collections.FSharpList{pluginDefaults.Plugin},Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},codonopt.CodonTableCache,Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Take input GSL and write it back out again, potentially rewriting parts of it
+</summary>
+</member>
+<member name="M:Expansion.expandMultiparts(Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Expand all instances where multiple parts are
+ encoded in a single part, introduced via variables
+ Priority to get rid of these because we don&apos;t have a syntax to
+ pretty print them.  We remove them by expanding out the underlying list
+ of parts into the enclosing assembly, while observing orientation
+ and applying any multipart level pragmas to individual parts
+</summary>
+</member>
+<member name="M:Expansion.expandFunction(Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Expanded GSLLines that are functions or function calls
+</summary>
+</member>
+<member name="M:Expansion.expandFor``1(Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Expand FOR statements, unrolling loops
+</summary>
+</member>
+<member name="M:Expansion.expandInlineRoughage(Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Take classic roughage as inline, replace it with equivalent GSL level 2 syntax
+</summary>
+</member>
+<member name="M:Expansion.validateRoughageLine(parseTypes.Roughage)">
+<summary>
+ Apply any simple sanity checks to roughage lines before we start rewriting them
+</summary>
+</member>
+<member name="M:Expansion.expandHB(System.Boolean,codonopt.CodonTableCache,Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Just expand heterology blocks
+</summary>
+</member>
+<member name="M:Expansion.expandMut(System.Boolean,Microsoft.FSharp.Collections.FSharpList{alleleSwapPluginDefs.AlleleSwapProvider},codonopt.CodonTableCache,Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Remove mutation definitions and replace with a lower level representation
+</summary>
+</member>
+<member name="M:Expansion.expandProtein(System.Boolean,System.Boolean,Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},codonopt.CodonTableCache,Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Take inline protein sequences and expand them out to DNA sequences
+</summary>
+</member>
+<member name="M:Expansion.highestExpansionPriority(Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Recursively examine every GSL line and return the expansion step with
+ highest priority.
+</summary>
+</member>
+<member name="M:Expansion.checkNeedsExpansion(Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Explore parse tree to look for things needing expansion
+</summary>
+</member>
+<member name="M:Expansion.testOnePartsList(Microsoft.FSharp.Collections.FSharpList{parseTypes.PPP})">
+<summary>
+ Check all parts in one assembly
+</summary>
+</member>
+<member name="M:Expansion.testPart(parseTypes.Part)">
+<summary>
+ Check if an individual part
+ requires expansion and work out what type
+</summary>
+</member>
+<member name="M:Expansion.expansionPriority(Expansion.ExpansionLevel)">
+<summary>
+ Given a choice, how high priority is a particular type of expansion
+ - e.g. do proteins before heterology blocks
+</summary>
+</member>
+<member name="M:Expansion.expandNames(Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Ensure we generate a name for each part
+</summary>
+</member>
+<member name="M:GSLLexer.gslTokenizer(System.Boolean,Microsoft.FSharp.Text.Lexing.LexBuffer{System.Char})">
+<summary>
+ Custom tokenizer front end to select between sub-parsers for
+ different languages and grammar regions.
+</summary>
+</member>
+<member name="M:GSLLexer.setTokenizer(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Text.Lexing.LexBuffer{System.Char},GSLParser.token})">
+<summary>
+ Set which tokenizer is currently being used.
+</summary>
+</member>
+<member name="P:GSLLexer.currentTokenizer">
+<summary>
+ Global currently running tokenizer.
+ Initialized at the bottom of this module.
+</summary>
+</member>
+<member name="M:GSLParser.prodIdxToNonTerminal(System.Int32)">
+<summary>
+ This function maps production indexes returned in syntax errors to strings representing the non terminal that would be produced by that production
+</summary>
+</member>
+<member name="M:Gslc.testPrimer">
+<summary>
+ Test bed for investigating primer misadventure
+</summary>
+</member>
+<member name="M:PrettyPrint.prettyPrintTree(Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Pretty Print an assembly tree, emitting it verbatim
+</summary>
+</member>
+<member name="M:PrettyPrint.prettyPrintLine(parseTypes.GSLLine)">
+<summary>
+ Pretty print line of GSL
+</summary>
+</member>
+<member name="M:PrettyPrint.prettyPrintRoughage(parseTypes.Roughage)">
+<summary>
+ Pretty print line of Roughage
+</summary>
+</member>
+<member name="M:PrettyPrint.printRP(constants.RelPos)">
+<summary>
+ Pretty print a RelPos
+</summary>
+</member>
+<member name="T:PrimerCreation.TuneState">
+<summary>
+  Current state of optimization during tail tuning.  Settings and best results so far.
+ We need to tune fwdTail length (ft)  fwd body (fb) as well as reverse equivalents.
+ There are 3 deltas to optimize, for the anneal delta, fwd amp delta and rev amp delta.
+</summary>
+</member>
+<member name="M:PrimerCreation.designPrimers(commonTypes.ParsedOptions,Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut})">
+<summary>
+ Time to design some primers given a list of assemblyout structures
+</summary>
+</member>
+<member name="M:PrimerCreation.tuneTails(System.Boolean,parseTypes.DesignParams,Microsoft.FSharp.Core.FSharpOption{System.Int32},System.Int32,System.Int32,Microsoft.FSharp.Core.FSharpOption{System.Double},Microsoft.FSharp.Core.FSharpOption{System.Int32},System.Int32,System.Int32,commonTypes.Primer,commonTypes.Primer,System.Char[])">
+<summary>
+ Extend tails of primers (or truncate) to optimize annealing Tm
+ after left/right design off a linker/inline
+</summary>
+</member>
+<member name="M:PrimerCreation.checkTailAOverlapsHeadB(System.Char[],System.Char[])">
+<summary>
+ Support routines for primer design scenarios and primer generation for stitches
+ Check if tail of A overlaps head of B
+</summary>
+</member>
+<member name="P:alleleSwapPluginDefs.orfPlusMargin">
+<summary>
+ Amount of extra dna adjacent to the ORF to include
+</summary>
+</member>
+<member name="M:alleleSwaps.generateLeftHB(Amyris.Bio.IO.CodonUsage.CodonLookup,System.Double,Microsoft.FSharp.Core.FSharpOption{System.Int32},parseTypes.DesignParams,System.Char[],System.Char[],System.Char[])">
+<summary>
+ Create a heterology block, removing part of the left hand (up) slice sequence and replacing with a rewritten sequence    
+ Entry point into this module
+</summary>
+</member>
+<member name="M:alleleSwaps.generateRightHB(Amyris.Bio.IO.CodonUsage.CodonLookup,System.Double,Microsoft.FSharp.Core.FSharpOption{System.Int32},parseTypes.DesignParams,System.Char[],System.Char[],System.Char[])">
+<summary>
+ Create a heterology block, removing part of the right hand (down) slice
+ sequence and replacing with a rewritten sequence
+ Entry point into this module
+</summary>
+</member>
+<member name="M:alleleSwaps.generateHBCore(Amyris.Bio.IO.CodonUsage.CodonLookup,System.Double,Microsoft.FSharp.Core.FSharpOption{System.Int32},parseTypes.DesignParams,System.Boolean,System.Char[],System.Char[],System.Char[])">
+<summary>
+ Generate a heterology block by eating into the downstream sequencing
+ and replacing it with a sequence that translates into the equivalent
+ amino acid sequence.  Be mindful of primer design and ensure that
+ the heterology block is long enough while having a good Tm of overlap
+ and leaving enough bases in a 60mer to overlap the adjacent regions
+ Takes up  prefix and down  which are the adjacent sequence and the prefix sequence
+ (e.g. a mutation) we&apos;d like just before the heterology block
+ 
+ Takes an optional targetAALen if a particular number of changed amino acids are required
+ This overrides any Tm optimization considerations.
+ Returns alternative sequence for down not including prefix sequence, but assuming Tm calculation will be for
+ prefix + down
+</summary>
+</member>
+<member name="M:alleleSwaps.expandAS(Microsoft.FSharp.Collections.FSharpList{alleleSwapPluginDefs.AlleleSwapProvider},System.Boolean,System.String,System.Boolean,sgdrefformat.GenomeDef,Amyris.Bio.IO.CodonUsage.CodonLookup,System.String,parseTypes.Mutation,alleleSwapPluginDefs.EndPref,Microsoft.FSharp.Collections.FSharpSet{System.String},System.Boolean)">
+<summary>
+ expand an allele swap.  takes verbose/GenomeDef/gene and mutation    
+ Common entry point for different types of designs.  Does sanity checking and basic lookups
+ then passes off expansion to specific subdesign routines
+</summary>
+</member>
+<member name="M:alleleSwaps.classicAAMut(alleleSwapPluginDefs.AlleleSwapDesignParams)">
+<summary>
+ Decide which end of the gene the mutation is closer to, 
+ and pick design
+ Gene is the actual gene name,  name is the #name entry or full gYNG2$C227Y entry
+</summary>
+</member>
+<member name="M:alleleSwaps.jobScorerClassicAAMut``1(``0)">
+<summary>
+ Classic reference implementation for an allele swap always
+ available but overwritten by other implementations
+</summary>
+</member>
+<member name="M:alleleSwaps.classicPromoterNT(System.String,System.String,Amyris.Bio.sgd.Feature,sgdrefformat.GenomeDef,parseTypes.Mutation)">
+<summary>
+ 5&apos; promoter mutation design - construct mutation with overlapping primers,
+ repeat promoter region around marker to minimize distruption and allow loop out
+ and use a heterology block downstream to prevent crossovers that eliminate the mutation
+ a         b            a         b          b+2                 c
+ promoterRep ; marker ; promoterRep(mutation)promoter ...ATG..... HB ....
+</summary>
+</member>
+<member name="M:alleleSwaps.expandSimpleMut(System.Boolean,sgdrefformat.GenomeDef,parseTypes.IDAt,parseTypes.Mutation)">
+<summary>
+ expand a simple mutation inline with a part
+</summary>
+</member>
+<member name="P:alleleSwaps.selectMutCodonRight">
+<summary>
+ Variant of selectMutCodon that forces the base pair differences as far right as possible
+</summary>
+</member>
+<member name="P:alleleSwaps.selectMutCodonLeft">
+<summary>
+ Variant of selectMutCodon, that forces the base pair difference as far left as possible
+</summary>
+</member>
+<member name="P:alleleSwaps.selectMutCodon">
+<summary>
+ Find codon that is maximally different given a function to calculate different
+</summary>
+</member>
+<member name="M:alleleSwaps.selectMutCodonBase(Microsoft.FSharp.Core.FSharpFunc{System.Char[],Microsoft.FSharp.Core.FSharpFunc{System.Char[],System.Int32}},Amyris.Bio.IO.CodonUsage.CodonLookup,System.Double,System.Char[],System.Char)">
+<summary>
+ Pick a codon for an amino acid that is maximally different to a given codon
+ given a comparison function cmp that gives a positive score for degree of difference
+</summary>
+</member>
+<member name="M:alleleSwaps.gcCount(System.Char[])">
+<summary>
+ Count GC bases in sequence
+</summary>
+</member>
+<member name="M:alleleSwaps.diffRight(System.Char[],System.Char[])">
+<summary>
+ How far right is desired change - want a codon change that minimizes base
+ pair changes on left hand side
+</summary>
+</member>
+<member name="M:alleleSwaps.diffLeft(System.Char[],System.Char[])">
+<summary>
+ How far left is desired change - want a codon change that minimizes base
+ pair changes on right hand side
+</summary>
+</member>
+<member name="M:alleleSwaps.diff(System.Char[],System.Char[])">
+<summary>
+ Count #differences between two codons
+</summary>
+</member>
+<member name="P:alleleSwaps.aa2Codons">
+<summary>
+ list of possible codons encoding each amino acid
+</summary>
+</member>
+<member name="M:alleleSwaps.makeRevLookup(Microsoft.FSharp.Collections.FSharpSet{System.Char[]})">
+<summary>
+ Support for introducing mutations into genes
+
+ Build a reverse lookup table of possible codons encoding a particular amino
+ acid, avoiding a provided list of non starters
+</summary>
+</member>
+<member name="M:ape.dumpAPE(System.String,System.String,Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut})">
+<summary>
+ Emit APE (genbank) format
+  outDir : string   tag: string  prefix for files  assemblies : List of AssemblyOut
+</summary>
+</member>
+<member name="M:ape.formatGB(System.Char[])">
+<summary>
+ Format a dna sequence in genbank human readable form
+</summary>
+</member>
+<member name="M:applySlices.applySlices(System.Boolean,Microsoft.FSharp.Collections.FSharpList{parseTypes.Mod},parseTypes.Slice)">
+<summary>
+ What does it mean to apply further slice notations to an existing piece?
+</summary>
+</member>
+<member name="M:applySlices.addOneOffset(constants.GeneEnd,System.Int32,System.Int32)">
+<summary>
+ Given a gene end and two one based offsets, calculate a new one based offset
+</summary>
+</member>
+<member name="M:cloneManager.dumpCM(System.String,System.String,Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Collections.FSharpList{commonTypes.DivergedPrimerPair}}})">
+<summary>
+ Clone manager formatted output
+</summary>
+</member>
+<member name="T:codonopt.CodonTableCache">
+<summary>
+ Given a library root, load (and cache) genomes on demand
+</summary>
+</member>
+<member name="T:codonopt.CodonOptData">
+<summary>
+ Genome specific data needed to generate a codon optimized sequence
+</summary>
+</member>
+<member name="M:codonopt.scoreWithCoords(MathNet.Numerics.Random.MersenneTwister,codonopt.CodonOptParams,Amyris.Bio.SuffixTree.SuffixTree,System.String)">
+<summary>
+ Evaluate a dna string given a set of optimization parameters.  Returns # of problems and vector in amino acid space of problem areas
+</summary>
+</member>
+<member name="T:codoptSupport.CodonOptimizer`2">
+<summary>
+ Implementation of a codon optimizer
+ &apos;CodopParams describe user set parameters for the algorithm
+ &apos;CodoptData describe genome specific parameters for the algorithm
+</summary>
+</member>
+<member name="T:codoptSupport.ICodonOptData">
+<summary>
+ Codon opt data structures for genome specific parameters
+ need to implement this interface
+</summary>
+</member>
+<member name="T:codoptSupport.ICodonOptParam">
+<summary>
+ Codon opt parameters are required to implement
+ this interface
+</summary>
+</member>
+<member name="M:codoptSupport.getCodonAvoid(sgdrefformat.GenomeDef)">
+<summary>
+ Check if there is a codonavoid definition in the reference genome and if so,
+ return the list of codons not to touch
+</summary>
+</member>
+<member name="P:codoptSupport.defaultBadSeqs">
+<summary>
+ typical sequences we want to exclude from synthesized DNA       
+</summary>
+</member>
+<member name="M:codoptSupport.codonOptDumb(Microsoft.FSharp.Collections.FSharpMap{System.String,System.Double},System.String)">
+<summary>
+ Given an amino acid sequence and codon frequency, pick a dumb optimal codon sequence using just the most frequent
+ amino acids.  This will only really work ok for very short sequences and doesn&apos;t check for problematic sequences.                        
+</summary>
+</member>
+<member name="M:commandConfig.parseCommandLineArgs(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Parse a command line arguments.  Return the parsed options and the list of
+ input files.  Raises an exception for ill-formed or unrecognized args.
+</summary>
+</member>
+<member name="P:commandConfig.defaultOpts">
+
+</member>
+<member name="M:commandConfig.printUsage">
+<summary>
+ Print arg usage and help text.
+</summary>
+</member>
+<member name="M:commandConfig.printCmdLineArg(commandConfig.CmdLineArgDef)">
+<summary>
+ Format a command line argument and print it.
+</summary>
+</member>
+<member name="P:commandConfig.cmdLineArgs">
+<summary>
+ Define all GSLC command line arguments here.
+ An argument consists of its name, the names of its parameters, a description,
+ and a function that takes a list of passed parameters and an options record
+ and returns a modified options record.
+</summary>
+</member>
+<member name="T:commandConfig">
+<summary>
+ Command line arguments, parsing, and command defaults.
+</summary>
+</member>
+<member name="T:commonTypes.PrimerPair">
+<summary>
+ Divergend pair of Primers
+</summary>
+</member>
+<member name="M:commonTypes.Primer.Interval(commonTypes.DNAIntervalType)">
+<summary>
+ Try to find an interval of type iType, returns Some/None
+</summary>
+</member>
+<member name="T:commonTypes.Primer">
+<summary>
+ Model a primer which diverges and has body/tail parts.
+ The body part anneals to the intended amplification target and the tail
+ hangs out and anneals for stitching purposes
+</summary>
+</member>
+<member name="P:commonTypes.DNASlice.rabitCandidates">
+<summary>
+ possible existing parts that could implement.  Amyris specific.
+</summary>
+</member>
+<member name="P:commonTypes.DNASlice.amplified">
+<summary>
+ is this slice created by PCR
+</summary>
+</member>
+<member name="T:commonTypes.DNASlice">
+<summary>
+ Represents one piece of DNA for assembly, capturing its origins and relevant details
+</summary>
+</member>
+<member name="T:commonTypes.StandardSlice">
+<summary>
+ Used in the grammar of GSL to pick a standard part of a gene (p, t, o etc)
+</summary>
+</member>
+<member name="T:commonTypes.ParsedOptions">
+<summary>
+ Instructions gleaned from command line
+</summary>
+</member>
+<member name="M:constants.one2ZeroOffset(constants.RelPos)">
+<summary>
+ Convert a OneOffset relative position
+ to a zero based coordinate system.  Follows
+ convention that -1 is the base before the &apos;A&apos; in ATG,
+ and +1 is the &apos;A&apos; for the 5&apos; end.  For the 3&apos; end, 
+ -1 is the last base of the stop codon, and +1 is the first
+ base of the terminator
+</summary>
+</member>
+<member name="P:constants.minHBCodonUsage">
+<summary>
+ Classic allele swap codon replacement min frequency
+</summary>
+</member>
+<member name="M:docstrings.dumpDocStrings(System.String,Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut})">
+<summary>
+ Create output file with user or algorithm documentation of the designs
+</summary>
+</member>
+<member name="M:docstrings.stuffDocstrings``1(``0,Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Take a mixture of docstrings and
+ assembly lines and fold the matching document strings into the assemblies for use later
+ 
+</summary>
+</member>
+<member name="T:docstrings">
+<summary>
+ Support for /// style docstring quotes.
+</summary>
+</member>
+<member name="M:dumpFlat.dumpText(System.String,Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut})">
+<summary>
+ Text representation of the assemblies to stdout
+ dumpFlat file format
+</summary>
+</member>
+<member name="T:dumpFlat">
+<summary>
+ Code for flat file output format
+</summary>
+</member>
+<member name="T:gslcProcess.GlobalAssets">
+<summary>
+ Helpful wrapper type for handing around GSLC&apos;s static assets and caches.
+</summary>
+</member>
+<member name="M:gslcProcess.processGSL(commonTypes.ParsedOptions,Microsoft.FSharp.Collections.FSharpList{pluginDefaults.Plugin},gslcProcess.GlobalAssets,System.String)">
+<summary>
+ Run GSLC on string input.
+ Raises an exception on error.
+</summary>
+</member>
+<member name="M:gslcProcess.writeOutput(commonTypes.ParsedOptions,gslcProcess.GlobalAssets,Microsoft.FSharp.Collections.FSharpList{parseTypes.Assembly})">
+<summary>
+ Once GSL is expanded as far as possible, go into output generation,
+ including reagent and auxillary file creation.
+</summary>
+</member>
+<member name="M:gslcProcess.cleanLongSlices(commonTypes.AssemblyOut)">
+<summary>
+ Promote long slices to regular rabits to avoid trying to build
+ impossibly long things with oligos.
+</summary>
+</member>
+<member name="M:gslcProcess.lexTest(commonTypes.ParsedOptions,System.String)">
+<summary>
+ Just perform lexing on input file.  For testing/debugging purposes.
+</summary>
+</member>
+<member name="M:gslcProcess.checkGeneNames(Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},Microsoft.FSharp.Collections.FSharpMap{System.String,System.Char[]},Microsoft.FSharp.Collections.FSharpList{parseTypes.Assembly})">
+<summary>
+ Validate the names of any provided genes against the reference genome and
+ provided gene library.  Raises an exception if any genes do not resolve.
+</summary>
+</member>
+<member name="M:gslcProcess.loadGlobalAssets(commonTypes.ParsedOptions)">
+<summary>
+ Load static assets and initialize global caches.
+</summary>
+</member>
+<member name="P:gslcProcess.initialDesignParams">
+<summary>
+ Starting design parameters for construction
+</summary>
+</member>
+<member name="T:gslcProcess">
+<summary>
+ Top-level compiler operations.
+</summary>
+</member>
+<member name="T:jsonAssembly.DNASliceJson">
+<summary>
+ Represents one piece of DNA for assembly, capturing its origins and relevant details
+</summary>
+</member>
+<member name="M:jsonAssembly.dumpJsonAssemblies(System.String,Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut})">
+<summary>
+  Emit JSON format
+  tag: string  prefix for files  assemblies : List of AssemblyOut
+</summary>
+</member>
+<member name="T:l2PluginDefs.L2JobAccept">
+<summary>
+ Type definitions for implementations providing level 2 functionality
+ i.e. knockout / gene titrations
+</summary>
+</member>
+<member name="M:l2expline.expandL2ExpLine(Microsoft.FSharp.Collections.FSharpList{l2PluginDefs.L2Provider},Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Look for L2 Expression Lines in GSL tree and expand those to L1 GSL, leaving other lines alone
+</summary>
+</member>
+<member name="M:l2expline.expandOneL2ExpLine(Microsoft.FSharp.Collections.FSharpList{l2PluginDefs.L2Provider},pragmaTypes.PragmaCollection,Microsoft.FSharp.Collections.FSharpSet{System.String},Microsoft.FSharp.Collections.FSharpMap{System.String,sgdrefformat.GenomeDef},parseTypes.L2ExpLine)">
+<summary>
+ Core expansion of a single L2 expression line
+</summary>
+</member>
+<member name="M:l2expline.generateOutputsTitrations(l2PluginDefs.L2DesignParams)">
+<summary>
+ Takes a level-2 line regarding promoter titrations and returns a list.
+
+ E.g. transforms a level-2 line, pA&gt;gB ; pc&gt;gD into
+ {&quot;uB&quot;; &quot;pC&quot; ; &quot;gD&quot; ; &quot;###&quot; ; &quot;pA&quot; ; &quot;gB[1:~500]&quot;}
+</summary>
+</member>
+<member name="M:l2expline.generateOutputsExplicitLocus(parseTypes.L2Id,l2PluginDefs.L2DesignParams)">
+<summary>
+ Takes a level-2 line regarding explicit locus and returns a list.
+
+ E.g. transforms a level-2 line, gHO^ ; pA &gt; gB ; pC &gt; gD into
+ {&quot;uHO&quot;; &quot;pA&quot; ; &quot;gB&quot; ; &quot;###&quot; ; &quot;!gD ; !pA&quot; ; &quot;dHO&quot;}
+</summary>
+</member>
+<member name="M:l2expline.l2JobScorer``1(``0)">
+<summary>
+ Base implementation for level 2 knock out / promoter titration
+ give it lowest score in case someone has a preferred implementation
+</summary>
+</member>
+<member name="M:l2expline.balance(Microsoft.FSharp.Collections.FSharpList{parseTypes.L2Elem})">
+<summary>
+ Implementation of GSL Level 2 Expression Lines
+ Modelled roughly on roughage syntax  e.g. gHO^ ; a&gt; b ; c&gt;d etc
+
+ Take a list of expression elements and organize them in a balanced
+ way - e.g. splitting between two halves of a megastitch
+</summary>
+</member>
+<member name="T:markers.HalfMarker">
+<summary>
+ Logic for reading in marker sets that support the ### virtual part
+</summary>
+</member>
+<member name="T:parseTypes.CutTarget">
+<summary>
+ Instruction to generate a cut in a piece of DNA which is a series of parts
+</summary>
+</member>
+<member name="T:parseTypes.L2Line">
+<summary>
+ L2 Top level container
+</summary>
+</member>
+<member name="T:parseTypes.OpenPath">
+<summary>
+ Module name to import.  Simple for now but could be dot separated series in future
+</summary>
+</member>
+<member name="T:parseTypes.L2ExpLine">
+<summary>
+ L2 Top level container for the expression line  z^ ; a&gt;b ; c &gt; d etc
+</summary>
+</member>
+<member name="T:parseTypes.L2Elem">
+<summary>
+ Element of a level 2 line  e.g.  pABC1&gt;gDEF2
+</summary>
+</member>
+<member name="T:parseTypes.Roughage">
+<summary>
+ One classic roughage construct
+</summary>
+</member>
+<member name="T:parseTypes.RoughageElem">
+<summary>
+ Roughage element
+</summary>
+</member>
+<member name="T:parseTypes.PPP">
+<summary>
+ Part plus a Pragma
+</summary>
+</member>
+<member name="T:parseTypes.Capabilities">
+<summary>
+ Build capabilities we might be allowed to optionally use for design            
+</summary>
+</member>
+<member name="T:parseTypes.DocstringLine">
+<summary>
+ One line of a docstring
+</summary>
+</member>
+<member name="P:pcrParamsParse.re">
+<summary>
+ Handle parsing of PCR parameters
+</summary>
+</member>
+<member name="T:pluginDefaults.Plugin">
+<summary>
+ Customize this data structure to include extensions to compiler
+</summary>
+</member>
+<member name="T:pluginDefaults">
+<summary>
+ Signatures for functions implementing plugin features
+</summary>
+</member>
+<member name="M:pragmaProcess.stuffPragmas``1(``0,Microsoft.FSharp.Core.FSharpFunc{System.String,System.Boolean},parseTypes.DesignParams,Microsoft.FSharp.Collections.FSharpList{parseTypes.GSLLine})">
+<summary>
+ Take a mixture of pragma instructions and
+ assembly lines and fold the appropriate pragma instructions
+ into the assembly details
+</summary>
+</member>
+<member name="M:pragmaProcess.cleanTransientPragmas(pragmaTypes.PragmaCollection)">
+<summary>
+ Eliminate pragmas that should only affect the next assembly, but not persist
+</summary>
+</member>
+<member name="P:pragmaProcess.initialPragmas">
+<summary>
+ Starting conditions for certain pragma states
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.TryGetValues(System.String)">
+<summary>
+ Get the values associated with a pragma.
+ Raises an exception is pName is not a registered pragma.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.TryGetOne(System.String)">
+<summary>
+ Get a single value associated with a pragma, ignoring any extras.
+ Raises an exception is pName is not a registered pragma.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.TryFind(System.String)">
+<summary>
+ Get a pragma.
+ Raises an exception is pName is not a registered pragma.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.Remove(System.String)">
+<summary>
+ Remove a pragma from this collection.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.MergeIn(pragmaTypes.PragmaCollection)">
+<summary>
+ Merge another PragmaCollection into this one.
+ The incoming pragmas will clobber any pragmas set in this collection.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.MergeIn(Microsoft.FSharp.Collections.FSharpList{pragmaTypes.Pragma})">
+<summary>
+ Merge a list of Pragmas into this collection.
+ The incoming pragmas will clobber any pragmas set in this collection.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.ContainsKey(System.String)">
+<summary>
+ Has a pragma been set?
+ Raises an exception if pName is not a registered pragma.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.Add(System.String,Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Add a pragma to this collection.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.Add(System.String,System.String)">
+<summary>
+ Add a pragma to this collection.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.Add(System.String)">
+<summary>
+ Add a pragma to this collection.
+</summary>
+</member>
+<member name="M:pragmaTypes.PragmaCollection.Add(pragmaTypes.Pragma)">
+<summary>
+ Add a pragma to this collection.
+</summary>
+</member>
+<member name="T:pragmaTypes.PragmaCollection">
+<summary>
+ A PragmaCollection is a mapping between pragma name and the actual value
+ set for that pragma.  This is the main data structure in which pragmas
+ are passed around.  It is a helpful and safe wrapping of an immutable map.
+ It should be impossible to add invalid pragmas to this structure without
+ doing it manually through the underlying map.
+</summary>
+</member>
+<member name="M:pragmaTypes.Pragma.hasVal(System.String)">
+<summary>
+ Helper function to check the list of args for a particular value.
+</summary>
+</member>
+<member name="M:pragmaTypes.Pragma.GetHashCode">
+<summary>
+ Hash a Pragma as a combination of pName and args.
+</summary>
+</member>
+<member name="M:pragmaTypes.Pragma.Equals(System.Object)">
+<summary>
+ Only consider pragma name and args in comparions.
+</summary>
+</member>
+<member name="T:pragmaTypes.Pragma">
+<summary>
+ Instance of a pragma directive.
+</summary>
+</member>
+<member name="T:pragmaTypes.PragmaDef">
+<summary>
+ Formal declaration of a pragma.
+ A pragma is fully specified by its name and the shape of the arguments it accepts.
+ A validation function may be optionally provided to fail fast during parsing
+ rather than when the pragma is used.
+</summary>
+</member>
+<member name="T:pragmaTypes.PragmaProperty">
+<summary>
+ Some pragmas need to be handled in special ways.
+ Those ways are enumerated here.
+</summary>
+</member>
+<member name="T:pragmaTypes.PragmaScope">
+<summary>
+ Pragmas are scoped within a GSL document.  Some pragmas
+ are somewhat &quot;scope-polymorphic&quot; and have different
+ behavior depending on which scope they appear in.
+ Specifying scope for pragmas also allows better error collection
+ during parsing.
+</summary>
+</member>
+<member name="M:pragmaTypes.buildPragma(System.String,Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Validated pragma construction during parsing
+ Fails with an exception if the pragma doesn&apos;t exist or has the wrong number of args.
+</summary>
+</member>
+<member name="M:pragmaTypes.validatePragmaName(System.String)">
+<summary>
+ Make sure any pragmas that invert do it sensibly.
+ Raise an exception if pName is not among the registered pragmas.
+</summary>
+</member>
+<member name="M:pragmaTypes.pragmaInverts(pragmaTypes.PragmaDef)">
+<summary>
+ Idiot check that we don&apos;t have any duplicate pragmas.
+ Determine if a pragma inverts, and validate that it inverts to a compatible pragma.
+ Returns the definition of the pragma it inverts to.
+</summary>
+</member>
+<member name="P:pragmaTypes.namePragmaDef">
+<summary>
+ This pragma is constructed manually during expansion.
+</summary>
+</member>
+<member name="M:pragmaTypes.pragmaUsage">
+<summary>
+ Print all available pragmas.
+</summary>
+</member>
+<member name="M:pragmaTypes.formatPragma(pragmaTypes.PragmaDef)">
+<summary>
+ Format a pragma definition.
+</summary>
+</member>
+<member name="P:pragmaTypes.legalPragmas">
+<summary>
+ Legal/Valid pragma names and defintions for lookup by name
+</summary>
+</member>
+<member name="M:pragmaTypes.noValidate``1(``0)">
+<summary>
+ Pass-through placeholder validator.
+</summary>
+</member>
+<member name="M:primerDump.simplePrimerDump(System.String,Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Collections.FSharpList{commonTypes.DivergedPrimerPair}},Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut})">
+<summary>
+ Dump out all the primers/primerparts to define the construct
+</summary>
+</member>
+<member name="T:primerDump">
+<summary>
+ IO routine for emitting simple primer details
+</summary>
+</member>
+<member name="M:resolveExtPart.fetchFullPartSequence(System.Boolean,Microsoft.FSharp.Collections.FSharpMap{System.String,System.Char[]},parseTypes.IDAt)">
+<summary>
+ Get the full part sequence for this external reference, don&apos;t apply any slice mods to it
+</summary>
+</member>
+<member name="M:resolveExtPart.legalPartPrefix(System.String)">
+<summary>
+ Does this part id start with a legal external part prefix
+</summary>
+</member>
+<member name="T:rycodExample.ThumperRycod">
+<summary>
+ Example XMLto train FSharp type provider.  NB: not a valid rycod example, has been simplified for brevity
+</summary>
+</member>
+<member name="M:ryse.sbolMegastitch(System.String,System.String,Microsoft.FSharp.Core.FSharpOption{System.String},sbolExample.ComponentDefinition,Microsoft.FSharp.Core.FSharpOption{sbolExample.ComponentDefinition})">
+<summary>
+ Return the ComponentDefintion for a Megastitch.
+</summary>
+</member>
+<member name="M:ryse.sbolStitch(System.String,System.String,Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Collections.FSharpList{sbolExample.ComponentDefinition})">
+<summary>
+ Return the ComponentDefintion for a Stitch.
+</summary>
+</member>
+<member name="M:ryse.sbolRabit(System.String,System.String,Microsoft.FSharp.Core.FSharpOption{System.String},System.String,sbolExample.Orientation,System.String,Microsoft.FSharp.Collections.FSharpList{sbolExample.ComponentDefinition},sbolExample.ComponentDefinition,sbolExample.ComponentDefinition)">
+<summary>
+ Return the ComponentDefintion for a Rabit.
+ Linkers are passed as a two-tuple with implicit ordering (5&apos;, 3&apos;)
+</summary>
+</member>
+<member name="M:ryse.sbolDnaElement(System.String,Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{System.String},System.String,sbolExample.ComponentDefinition,sbolExample.ComponentDefinition,Microsoft.FSharp.Core.FSharpOption{System.Tuple{sbolExample.ComponentDefinition,sbolExample.ComponentDefinition}})">
+<summary>
+ Return the ComponentDefintion for a Rabit DNA element.
+ Primers are passed as two-tuples with the implicit
+ ordering (fwd/5&apos;, rev/3&apos;)
+</summary>
+</member>
+<member name="M:ryse.sbolPrimer(System.String,System.Char[],System.Char[],ryse.PrimerType)">
+<summary>
+ Create the SBOL objects for a primer.
+</summary>
+</member>
+<member name="M:ryse.sbolLinker(commonTypes.RYSELinker)">
+<summary>
+ Return the SBOL specification of a RYSE linker.
+</summary>
+</member>
+<member name="M:ryse.linkerUris(System.String)">
+<summary>
+ Return the URIs for linker ComponentDefintion and Sequence
+</summary>
+</member>
+<member name="M:ryse.mapRyseLinkers(commonTypes.ParsedOptions,Microsoft.FSharp.Collections.FSharpMap{System.Int32,ryse.HutchRabit},Microsoft.FSharp.Collections.FSharpMap{System.String,commonTypes.RYSELinker},commonTypes.AssemblyOut)">
+<summary>
+ Assign ryse linkers to the design.
+</summary>
+</member>
+<member name="M:ryse.countRyseLinkersNeeded(Microsoft.FSharp.Core.FSharpFunc{System.String,Microsoft.FSharp.Core.Unit},System.Int32,Microsoft.FSharp.Collections.FSharpList{commonTypes.DNASlice})">
+<summary>
+ Determine how many junctions will require RYSE linkers.
+ Inline dna segments won&apos;t for example unless they have rabitstart/end pragmas
+</summary>
+</member>
+<member name="M:ryse.getLinkerSetsForDesign(commonTypes.AssemblyOut)">
+<summary>
+ Determine which sets of linkers to use for a design
+</summary>
+</member>
+<member name="M:ryse.getHutchInfoViaWeb(System.Int32)">
+<summary>
+ Retrieve a Rabit specifiction from local cache or by making a thumper call.
+</summary>
+</member>
+<member name="M:ryse.getRabit(System.Int32)">
+<summary>
+ Get spec for rabit from hutch given rabit id
+</summary>
+</member>
+<member name="M:ryse.fetch(System.String)">
+<summary>
+ Hutch interaction: fetch part defs from RYCOd service and cache them.
+</summary>
+</member>
+<member name="M:ryse.loadThumperRef(System.String)">
+<summary>
+ Get auxillary cached information about key rabits for thumper rabits
+</summary>
+</member>
+<member name="M:ryse.loadRyseLinkers(System.String)">
+<summary>
+ Load name\tsequence text file of RYSE linkers and return a map
+</summary>
+</member>
+<member name="P:ryse.verbose">
+<summary>
+ RYSE verbose flag
+</summary>
+</member>
+<member name="M:sbolExample.SubcomponentIntegration.emit">
+<summary>
+ Emit all SBOL objects needed to represent this subcomponent integration.
+</summary>
+</member>
+<member name="M:sbolExample.ComponentDefinition.emit">
+<summary>
+ Emit all top-level SBOL XML objects representing this entity.
+</summary>
+</member>
+<member name="M:sbolExample.ComponentDefinition.asSubcomponent(Microsoft.FSharp.Collections.FSharpList{sbolExample.Location},Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Helper function to create a subcomponent reference to this CD.
+</summary>
+</member>
+<member name="M:sbolExample.compileGbom(System.Collections.Generic.IEnumerable{sbolExample.ComponentDefinition})">
+<summary>
+ Convert a pile o&apos; ComponentDefinitions into a full-blown GBoM.
+</summary>
+</member>
+<member name="M:sbolExample.seqFromDna(System.String)">
+<summary>
+ Create a new Sequence type from dna.
+</summary>
+</member>
+<member name="M:sbolExample.Component(System.String,System.String,Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Create a properly-wrapped Component reference
+</summary>
+</member>
+<member name="T:sgdrefformat.GenomeDef">
+<summary>
+ Init genome definition, genes etc
+</summary>
+</member>
+<member name="T:sgdrefformat">
+<summary>
+ IO routines for loading the reference file format
+</summary>
+</member>
+<member name="M:shared.fp(parseTypes.ParseRange)">
+<summary>
+ Pretty print a ParseRange line#/col# combo for error reporting
+</summary>
+</member>
+<member name="M:shared.pad(System.Int32)">
+<summary>
+ Produce a padding string of spaces n long
+</summary>
+</member>
+<member name="M:shared.recalcOffset(Microsoft.FSharp.Collections.FSharpList{commonTypes.DNASlice})">
+<summary>
+ Recalculate the offsets of pieces in a list of pieces after new pieces are added in    
+</summary>
+</member>
+<member name="M:shared.ambId(Microsoft.FSharp.Core.FSharpOption{System.Int32})">
+<summary>
+ Functions needed across several modules
+ Print an integer id that might not be assigned yet 
+</summary>
+</member>
+<member name="M:thumper.Rabit.signature">
+<summary>
+ Get Rabit &quot;signature&quot;, a &quot;unique&quot; identification.
+</summary>
+</member>
+<member name="M:thumper.Rabit.flip">
+<summary>
+ Invert rabit direction, a hairy operation indeed.
+</summary>
+</member>
+<member name="M:thumper.dumpThumper(commonTypes.ParsedOptions,Microsoft.FSharp.Collections.FSharpMap{System.String,System.String},Microsoft.FSharp.Collections.FSharpSet{markers.HalfMarker},Microsoft.FSharp.Collections.FSharpMap{System.String,commonTypes.RYSELinker},Microsoft.FSharp.Collections.FSharpMap{System.Int32,ryse.HutchRabit},System.String,Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut},Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Collections.FSharpList{commonTypes.DivergedPrimerPair}},System.Boolean)">
+<summary>
+ Thumper inputs - rabits, stitches, 
+</summary>
+</member>
+<member name="M:thumper.dumpRYCO(System.String,System.String,System.Boolean,Microsoft.FSharp.Collections.FSharpList{thumper.MegastitchOut},Microsoft.FSharp.Collections.FSharpMap{System.String,commonTypes.RYSELinker},Microsoft.FSharp.Collections.FSharpMap{System.Tuple{System.String,System.String,System.String,System.String,System.Char[]},System.Int32},Microsoft.FSharp.Collections.FSharpSet{System.Int32},Microsoft.FSharp.Collections.FSharpMap{Microsoft.FSharp.Collections.FSharpList{System.Int32},System.Int32},Microsoft.FSharp.Collections.FSharpSet{System.Int32})">
+<summary>
+ RYCO formatted thumper output
+</summary>
+</member>
+<member name="M:thumper.makeRYCORabit(Microsoft.FSharp.Collections.FSharpMap{System.String,commonTypes.RYSELinker},System.String,thumper.Rabit)">
+<summary>
+ Convert a Rabit into a RycodRabit
+</summary>
+</member>
+<member name="M:thumper.dumpSbol(System.String,System.String,System.Boolean,Microsoft.FSharp.Collections.FSharpList{thumper.MegastitchOut},Microsoft.FSharp.Collections.FSharpMap{System.String,commonTypes.RYSELinker},Microsoft.FSharp.Collections.FSharpMap{System.Tuple{System.String,System.String,System.String,System.String,System.Char[]},System.Int32},Microsoft.FSharp.Collections.FSharpSet{System.Int32},Microsoft.FSharp.Collections.FSharpMap{Microsoft.FSharp.Collections.FSharpList{System.Int32},System.Int32},Microsoft.FSharp.Collections.FSharpSet{System.Int32})">
+<summary>
+ SBOL2/GBoM formatted thumper output
+</summary>
+</member>
+<member name="M:thumper.makeSBOLRabit(Microsoft.FSharp.Collections.FSharpMap{System.String,commonTypes.RYSELinker},Microsoft.FSharp.Core.FSharpOption{System.String},thumper.Rabit)">
+<summary>
+ Convert a Rabit into a SBOL ComponentDefinition.
+ Returns all SBOL top-levels representing the rabit.
+</summary>
+</member>
+<member name="M:thumper.prepRabitForThumper(thumper.Rabit)">
+<summary>
+ Truncate and validate rabit primers.
+ Returns a revised Rabit.
+</summary>
+</member>
+<member name="M:thumper.reuseThumperParts(Microsoft.FSharp.Collections.FSharpList{commonTypes.AssemblyOut})">
+<summary>
+ Select and implement part reuse in an assembly at the rabit part level 
+</summary>
+</member>
+<member name="M:thumper.chooseBestPart(thumperProxyTypes.RabitCandidate[])">
+<summary>
+ select best replacement rabit given a list
+</summary>
+</member>
+<member name="M:thumper.trimRyseLinkers(Microsoft.FSharp.Collections.FSharpMap{System.String,commonTypes.RYSELinker},thumper.Rabit)">
+<summary>
+ Remove actual linker sequences, because Thumper is going to add those back in.
+</summary>
+</member>
+<member name="M:thumper.estBreed(Microsoft.FSharp.Collections.FSharpList{commonTypes.DNASlice})">
+<summary>
+ Attempt to guess rabit breed
+</summary>
+</member>
+<member name="P:thumper.thumperRabitNameLength">
+<summary>
+ Parts specific to keeping interactions with thumper cool
+</summary>
+</member>
+<member name="T:thumperProxyTypes.RabitLookupReply">
+<summary>
+ Rabit lookup reply structure.  Candidate rabits
+</summary>
+</member>
+<member name="T:thumperProxyTypes.RabitCandidate">
+<summary>
+ Single rabit instance that could be re-used in a design
+</summary>
+</member>
+<member name="T:thumperProxyTypes">
+<summary>
+ Call/return types for thumper proxy service
+</summary>
+</member>
+<member name="M:uri.createTempUri">
+<summary>
+ Construct a locally-unique temporary URI.
+</summary>
+</member>
+<member name="M:uri.linkerUri(System.String)">
+<summary>
+ Construct a RYSE linker URI from a link code.
+ Since this is entirely programmatic we expect it should never fail at
+ runtime; thus, raises an exception on error.
+</summary>
+</member>
+<member name="M:uri.addTermToNamespace(System.String,System.String)">
+<summary>
+ Add a term entry into a namespace.
+</summary>
+</member>
+<member name="M:uri.addNamespaces(System.String,Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Construct a URI namespace extension.
+</summary>
+</member>
+<member name="M:uri.buildUri(Microsoft.FSharp.Collections.FSharpList{System.String},System.String)">
+<summary>
+ Construct a local URI from a list of namespaces and an instance term.
+</summary>
+</member>
+<member name="M:uri.checkForbiddenChars(System.String)">
+<summary>
+ Check a string for forbidden characters, return Some(s, badChars) if any are found.
+</summary>
+</member>
+<member name="M:uri.unwrap(uri.UriResult)">
+<summary>
+ Helper function to raise an exception on a bad UriResult
+</summary>
+</member>
+</members>
+</doc>
