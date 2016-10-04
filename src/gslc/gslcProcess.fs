@@ -22,6 +22,7 @@ open thumper // Thumper output formats, dumping etc
 open ryse    // RYSE architecture
 open cloneManager
 open ape
+open jsonAssembly
 open DnaCreation
 open PrimerCreation
 open dumpFlat
@@ -302,6 +303,10 @@ let writeOutput
     match opts.apeOut with
     | None -> ()
     | Some(path,tag) -> dumpAPE path tag tweakedTree
+
+    match opts.jsonOut with
+    | None -> ()
+    | Some(prefix) -> dumpJsonAssemblies prefix tweakedTree
 
     match opts.cmOut with
     | None -> ()

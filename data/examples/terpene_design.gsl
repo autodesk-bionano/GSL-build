@@ -1,4 +1,5 @@
 // Part definitions 
+#refgenome S288C
 let pGAL1_10 = gGAL1[-668:-1]
 let truncHMGR = /ATGG/ {#rabitstart }; gHMG1[1586:~200E] 
 

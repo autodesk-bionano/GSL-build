@@ -1,0 +1,1 @@
+Name	Id	fwd	rev	fwdtail	fwdbody	revtail	revbody	fwdbridge	revbridge	fwdanneal	fwdsandwich	fwdamp	revanneal	revsandwich	revamp	fwdannealTm	fwdampTm	revannealTm	revampTm

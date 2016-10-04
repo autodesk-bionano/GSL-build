@@ -119,6 +119,10 @@ let cmdLineArgs = [
     {arg = "name2id"; param = ["outfile"]; alias = [];
      desc = "filename/path for name2id mapping in rycody output.\nDefault is projname.name2id.txt";
      proc = fun p opts -> {opts with name2IdPath = Some(p.[0])} };
+
+     {arg = "json"; param = ["prefix"]; alias = [];
+     desc = "json format of the AssemblyOut";
+     proc = fun p opts -> {opts with jsonOut = Some(p.[0])} };
 ]
 
 // TODO: add command aliases
@@ -151,6 +155,7 @@ let printUsage() =
 ///
 let defaultOpts:ParsedOptions =
    {apeOut = None;
+    jsonOut = None;
     quiet = false;
     libDir = libRoot;
     refStrain = "cenpk";

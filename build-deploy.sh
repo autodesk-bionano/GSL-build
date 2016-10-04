@@ -28,15 +28,6 @@ run() {
   fi
 }
 
-yesno() {
-  # NOTE: Defaults to NO
-  read -p "$1 [y/N] " ynresult
-  case "$ynresult" in
-    [yY]*) true ;;
-    *) false ;;
-  esac
-}
-
 set +e
 run $PAKET_BOOTSTRAPPER_EXE
 bootstrapper_exitcode=$?
@@ -57,13 +48,9 @@ then
   echo ""
   echo "This will import over 100 SSL root certificates into your Mono"
   echo "certificate repository."
+  echo "Installing..."
   echo ""
-  if yesno "Run 'mozroots --import --sync' now?"
-  then
-    mozroots --import --sync
-  else
-    echo "Attempting to continue without running mozroots. This might fail."
-  fi
+  mozroots --import --sync
   # Re-run bootstrapper whether or not the user ran mozroots, because maybe
   # they fixed the problem in a separate terminal window.
   run $PAKET_BOOTSTRAPPER_EXE
