@@ -8,8 +8,8 @@
 
 # Xamarin Studio / monodevelop user-specific
 *.userprefs
-*.dll.mdb
-*.exe.mdb
+#*.dll.mdb
+#*.exe.mdb
 
 # Build results
 
@@ -17,8 +17,8 @@
 [Rr]elease/
 x64/
 build/
-[Bb]in/
-[Oo]bj/
+#[Bb]in/
+#[Oo]bj/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
